@@ -24,6 +24,10 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+app.get('/hireForm', (req, res) => {
+    res.render('hiringPage');
+});
+
 
 // Log connection
 app.listen(HTTP_PORT, () => {
