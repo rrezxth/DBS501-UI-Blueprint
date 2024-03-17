@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-app.get('/hireForm', (req, res) => {
+app.get('/hiringForm', (req, res) => {
     res.render('hiringPage');
 });
 
