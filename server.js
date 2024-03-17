@@ -24,8 +24,14 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+// Hiring page
 app.get('/hiringForm', (req, res) => {
-    res.render('hiringPage');
+    res.render('hiringPage');   
+});
+
+// Display all employees (clickable rows)
+app.get('/displayAllEmployees', (req, res) => {
+    res.render('displayEmpPage');
 });
 
 
