@@ -34,6 +34,11 @@ app.get('/displayAllEmployees', (req, res) => {
     res.render('displayEmpPage');
 });
 
+// Edit employee information
+app.get('/displayAllEmployees/editEmployee', (req, res) => {
+    res.render('editEmpPage');
+});
+
 
 // Log connection
 app.listen(HTTP_PORT, () => {
