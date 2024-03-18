@@ -44,6 +44,11 @@ app.get('/findJobTitle', (req, res) => {
     res.render('findJobPage');   
 });
 
+// Display all jobs
+app.get('/displayAllJobInfo', (req, res) => {
+    res.render('displayJobsPage');   
+});
+
 // 
 
 
