@@ -46,10 +46,14 @@ app.get('/findJobTitle', (req, res) => {
 
 // Display all jobs
 app.get('/displayAllJobInfo', (req, res) => {
-    res.render('displayJobsPage');   
+    res.render('displayJobPage');   
 });
 
-// 
+// Edit job info
+app.get('/displayAllJobInfo/editJob', (req, res) => {
+    res.render('editJobPage');   
+});
+
 
 
 // Log connection

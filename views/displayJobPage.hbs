@@ -40,6 +40,8 @@
         <tr>
             <th scope="col">Job ID</th>
             <th scope="col">Job Title</th>
+            <th scope="col">Minimum Salary</th>
+            <th scope="col">Maximum Salary</th>
         </tr>
     </thead>
     <tbody>
@@ -55,18 +57,21 @@
     document.addEventListener('DOMContentLoaded', function() {
         const tableBody = document.querySelector('table.table tbody');
         const additionalData = [
-            { job_id: 10, job_title : "Human Resources" },
-            { job_id: 17, job_title : "Customer Service" },
-            { job_id: 27, job_title : "Assistant to the Manager" },
-            { job_id: 22, job_title : "Sales" },
-            { job_id: 13, job_title : "CEO" },
-            { job_id: 44, job_title : "Accounting" },
-            ];
+            { job_id: 10, job_title: "Human Resources", min_salary: 45000, max_salary: 60000 },
+            { job_id: 17, job_title: "Customer Service", min_salary: 35000, max_salary: 45000 }, // Added missing comma
+            { job_id: 27, job_title: "Assistant to the Manager", min_salary: 65000, max_salary: 70000 },
+            { job_id: 22, job_title: "Sales", min_salary: 60000, max_salary: 90000 },
+            { job_id: 13, job_title: "CEO", min_salary: 150000, max_salary: 200000 },
+            { job_id: 44, job_title: "Accounting", min_salary: 40000, max_salary: 55000 }
+        ];
+
 
         additionalData.forEach(data => {
-            const row = `<tr class="clickable-row" data-href="/displayAllEmployees/editEmployee">
+            const row = `<tr class="clickable-row" data-href="/displayAllJobInfo/editJob">
                 <th scope="row">${data.job_id}</th>
                 <td>${data.job_title}</td>
+                <td>${data.min_salary}</td>
+                <td>${data.max_salary}</td>
             </tr>`;
             tableBody.innerHTML += row;
         });
