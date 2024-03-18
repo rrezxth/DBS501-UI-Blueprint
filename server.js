@@ -54,7 +54,10 @@ app.get('/displayAllJobInfo/editJob', (req, res) => {
     res.render('editJobPage');   
 });
 
-
+// Create job info
+app.get('/createNewJob', (req, res) => {
+    res.render('createJobPage');   
+});
 
 // Log connection
 app.listen(HTTP_PORT, () => {
