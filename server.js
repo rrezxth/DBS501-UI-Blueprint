@@ -39,6 +39,13 @@ app.get('/displayAllEmployees/editEmployee', (req, res) => {
     res.render('editEmpPage');
 });
 
+// Find job title page
+app.get('/findJobTitle', (req, res) => {
+    res.render('findJobPage');   
+});
+
+// 
+
 
 // Log connection
 app.listen(HTTP_PORT, () => {
