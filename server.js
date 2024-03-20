@@ -63,3 +63,5 @@ app.get('/createNewJob', (req, res) => {
 app.listen(HTTP_PORT, () => {
     console.log('Listening on PORT: ' + HTTP_PORT);
 });
+
+// Renamed. Connection check?
