@@ -7,9 +7,9 @@ async function connectToOracle() {
 
   try {
     connection = await oracledb.getConnection({
-      user: process.env.DB_USER,
-      password: process.env.DB_PASS,
-      connectionString: process.env.DB_CONNECTIONSTRING
+      user: process.env.DB_USER,        // DB_Username
+      password: process.env.DB_PASS,    // DB_Password
+      connectionString: process.env.DB_CONNECTIONSTRING   // Syntax is [Hostname]:[Port]/[ServiceName]
     });
 
      console.log('Connection established to the Database.');
