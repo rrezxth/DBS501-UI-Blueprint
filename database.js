@@ -1,4 +1,4 @@
-require('dotenv').config();   // write when using .env
+require('dotenv').config();   // required when using .env
 
 const oracledb = require('oracledb');
 
@@ -12,13 +12,18 @@ async function connectToOracle() {
       connectionString: process.env.DB_CONNECTIONSTRING
     });
 
-     console.log('Connection established HELLOOOO');
+     console.log('Connection established to the Database.');
+
+     // Testing some table
+    const result = await connection.execute(`SELECT * FROM hr_jobs`);
+    console.log('Query result:', result);
+
   } catch (err) {
     console.error('Error connecting to the database:', err);
   } finally {
     if (connection) {
       try {
-        await connection.close(); // Always close connections
+        await connection.close();
       } catch (err) {
         console.error(err);
       }
