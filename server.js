@@ -62,11 +62,13 @@ app.get('/createNewJob', (req, res) => {
     res.render('createJobPage');   
 });
 
+// ---------------------------------------------------------
 // APIs
-app.get('/api/somedata', async (req, res) => {
+
+app.get('/api/getjobsinfo', async (req, res) => {
     try {
-        const someData = await database.connectToOracle();
-        res.json(someData);
+        const jobsData = await database.getJobsInfo();
+        res.json(jobsData);
     } catch (err) {
         res.status(500).send('Server error');
     }

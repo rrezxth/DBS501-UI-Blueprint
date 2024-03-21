@@ -79,7 +79,7 @@
     <script>
     async function fetchJobs() {
         try {
-            const response = await fetch('/api/somedata');
+            const response = await fetch('/api/getjobsinfo');
             const jobs = await response.json();
 
             const dropdownButton = document.getElementById('dropdownMenuButton');
