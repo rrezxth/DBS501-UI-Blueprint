@@ -1,9 +1,9 @@
 // database.js
 
-require('dotenv').config();   // required when using .env
-
 const oracledb = require('oracledb');
 const dbConfig = require('./dbConfig');
+
+oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 
 async function connectToOracle() {
   let connection;
