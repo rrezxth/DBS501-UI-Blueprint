@@ -50,6 +50,18 @@
                     </div>
                 </div>
 
+                <!-- Dropdown -->
+                <div class="col-md-8">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Jobs List
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="jobsInfoDropdown">
+                        <!-- Job items here -->
+                    </ul>
+                </div>
+                </div>
+
                 <!-- button -->
                 <div class="row mt-4 mb-3"> 
                     <div class="col-md-12">
@@ -64,5 +76,33 @@
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+    async function fetchJobs() {
+        try {
+            const response = await fetch('/api/somedata');
+            const jobs = await response.json();
+
+            const dropdownButton = document.getElementById('dropdownMenuButton');
+            const dropdown = document.getElementById('jobsInfoDropdown');
+            jobs.forEach((job) => {
+                const item = document.createElement('li');
+                const link = document.createElement('a');
+                link.className = 'dropdown-item';
+                link.textContent = job[1]; 
+                link.addEventListener('click', function(event) {
+                    event.preventDefault(); 
+                    dropdownButton.textContent = this.textContent; 
+                });
+                item.appendChild(link);
+                dropdown.appendChild(item);
+            });
+        } catch (error) {
+            console.error("Failed to fetch jobs:", error); // Error log
+        }
+    }
+
+    fetchJobs()
+    </script>
+
 </body>
 </html>
