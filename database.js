@@ -59,10 +59,12 @@ async function getManagersInfo() {
   try {
     connection = await oracledb.getConnection(dbConfig);
 
-    const result = await connection.execute(`SELECT *
-                                            FROM hr_employees e
-                                            JOIN hr_departments d ON e.department_id = d.department_id
-                                            WHERE e.employee_id = d.manager_id;`);
+    const result = await connection.execute(`SELECT e.employee_id, e.first_name, e.last_name
+                                              FROM hr_employees e
+                                              JOIN hr_departments d ON e.department_id = d.department_id
+                                              WHERE d.manager_id = e.employee_id`);
+    //console.log(result);
+          
     return result.rows;
 
   } catch (err) {
@@ -78,6 +80,8 @@ async function getManagersInfo() {
     }
   }
 }
+
+//getManagersInfo();
 
 module.exports = {
   getJobsInfo,
