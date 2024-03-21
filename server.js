@@ -69,6 +69,7 @@ app.get('/createNewJob', (req, res) => {
 app.get('/api/getjobsinfo', async (req, res) => {
     try {
         const jobsData = await database.getJobsInfo();
+
         res.json(jobsData);
     } catch (err) {
         res.status(500).send('Internal server error');
@@ -79,6 +80,7 @@ app.get('/api/getjobsinfo', async (req, res) => {
 app.get('/api/getmanagersinfo', async (req, res) => {
     try {
         const managersData = await database.getManagersInfo();
+
         res.json(managersData);
     } catch (err) {
         res.status(500).send('Internal server error');
