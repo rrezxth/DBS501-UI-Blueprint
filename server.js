@@ -4,6 +4,7 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path');
 const app = express();
+const database = require('./database');
 
 // Configure express-handlebars engine
 app.engine(".hbs", exphbs.engine({
@@ -19,6 +20,8 @@ const publicDirectoryPath = path.join(__dirname, '/public');
 app.use(express.static(publicDirectoryPath));
 
 // ---------------------------------------------------------
+// ENDPOINTS
+
 // HOME page
 app.get('/', (req, res) => {
     res.render('index');
@@ -59,9 +62,19 @@ app.get('/createNewJob', (req, res) => {
     res.render('createJobPage');   
 });
 
+// APIs
+app.get('/api/somedata', async (req, res) => {
+    try {
+        const someData = await database.connectToOracle();
+        res.json(someData);
+    } catch (err) {
+        res.status(500).send('Server error');
+    }
+});
+
 // Log connection
 app.listen(HTTP_PORT, () => {
     console.log('Listening on PORT: ' + HTTP_PORT);
 });
 
-// Renamed. Connection check?
+
