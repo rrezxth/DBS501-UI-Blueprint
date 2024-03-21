@@ -1,11 +1,11 @@
 // dbConfig.js
 
-require('dotenv').config(); // Load environment variables
+require('dotenv').config();
 
 const dbConfig = {
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  connectionString: process.env.DB_CONNECTIONSTRING,
+  user: process.env.DB_USER,          // DB_Username
+  password: process.env.DB_PASS,      // DB_Password
+  connectionString: process.env.DB_CONNECTIONSTRING,    // Syntax is [Hostname]:[Port]/[ServiceName]
 };
 
 module.exports = dbConfig;
