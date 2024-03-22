@@ -29,42 +29,39 @@
     <div class="container mt-5">
         <div class="row justify-content-md-center">
             <div class="col-md-8">
-                <form>
-                    <!-- First Name, Last Name, Email -->
+                <form id="hireEmployeeForm">
                     <div class="row mb-3">
                         <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="First Name" aria-label="First Name">
+                            <input type="text" class="form-control" name="p_first_name" placeholder="First Name" required>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Last Name" aria-label="Last Name">
+                            <input type="text" class="form-control" name="p_last_name" placeholder="Last Name" required>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Email" aria-label="Email">
+                            <input type="text" class="form-control" name="p_email" placeholder="Email" required>
                         </div>
                     </div>
-                    <!-- Phone, Salary -->
                     <div class="row mb-3">
                         <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Phone" aria-label="Phone">
+                            <input type="text" class="form-control" name="p_phone" placeholder="Phone" required>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Salary" aria-label="Salary">
+                            <input type="text" class="form-control" name="p_salary" placeholder="Salary" required>
                         </div>
-                        <!-- Optional empty column for alignment, remove if not needed -->
-                        <div class="col-md-4"></div>
                     </div>
+                    <!-- Hidden fields for job, manager, and department IDs -->
+                    <input type="hidden" name="p_job_id" id="jobIdField">
+                    <input type="hidden" name="p_manager_id" id="managerIdField">
+                    <input type="hidden" name="p_department_id" id="departmentIdField">
 
-                    <!-- Job Dropdown -->
                     <div class="row mb-3">
                         <div class="col-md-8">
-                            <div class="dropdown">
-                                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButtonJob" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Job List
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="jobsInfoDropdown">
-                                    <!-- Job items here -->
-                                </ul>
-                            </div>
+                            <button type="button" class="btn btn-warning dropdown-toggle" id="dropdownMenuButtonJob" data-bs-toggle="dropdown" aria-expanded="false">
+                                Job List
+                            </button>
+                            <ul class="dropdown-menu" id="jobsInfoDropdown">
+                                <!-- Job items will be populated here via JavaScript -->
+                            </ul>
                         </div>
                     </div>
 
@@ -96,8 +93,7 @@
                         </div>
                     </div>
 
-                    <!-- Submit Button -->
-                    <div class="row"> 
+                    <div class="row">
                         <div class="col-md-12 mt-5">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
@@ -130,6 +126,7 @@
                 link.addEventListener('click', function(event) {
                     event.preventDefault(); 
                     dropdownButton.textContent = this.textContent; 
+                    document.getElementById('jobIdField').value = job.JOB_ID;
                 });
                 item.appendChild(link);
                 dropdown.appendChild(item);
@@ -155,7 +152,8 @@
 
                 link.addEventListener('click', function(event) {
                     event.preventDefault(); 
-                    dropdownButton.textContent = this.textContent; 
+                    dropdownButton.textContent = this.textContent;
+                    document.getElementById('managerIdField').value = manager.EMPLOYEE_ID;
                 });
                 item.appendChild(link);
                 dropdown.appendChild(item);
@@ -170,14 +168,10 @@
             const response = await fetch('/api/getdepartmentsinfo');
             const departments = await response.json();
 
-            console.log(departments);
-
             const dropdownButton = document.getElementById('dropdownMenuButtonDepartment');
             const dropdown = document.getElementById('departmentsInfoDropdown');
 
             departments.forEach((department) => {
-
-                console.log(department);
 
                 const item = document.createElement('li');
                 const link = document.createElement('a');
@@ -186,7 +180,8 @@
 
                 link.addEventListener('click', function(event) {
                     event.preventDefault(); 
-                    dropdownButton.textContent = this.textContent; 
+                    dropdownButton.textContent = this.textContent;
+                    document.getElementById('departmentIdField').value = department.DEPARTMENT_ID;
                 });
                 item.appendChild(link);
                 dropdown.appendChild(item);
@@ -195,6 +190,48 @@
             console.error("Failed to fetch jobs:", error); // Error log
         }
     }
+
+    // Handle form submission
+    document.getElementById('hireEmployeeForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        const data = {};
+        formData.forEach((value, key) => { data[key] = value; });
+
+        fetch('/hire-employee', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.text())
+        .then(message => {
+            alert(message);
+            resetFormAndDropdowns();
+        })
+        .catch(error => {
+            console.error('Error hiring employee:', error);
+            alert('Failed to hire employee.'); // Display error message
+        });
+    });
+
+    function resetFormAndDropdowns() {
+    // Clear text fields
+    document.querySelectorAll('#hireEmployeeForm input[type="text"]').forEach(input => {
+        input.value = '';
+    });
+
+    // Reset hidden inputs
+    document.querySelectorAll('#hireEmployeeForm input[type="hidden"]').forEach(input => {
+        input.value = '';
+    });
+
+    // Reset dropdowns
+    document.getElementById('dropdownMenuButtonJob').textContent = 'Job List';
+    document.getElementById('dropdownMenuButtonManager').textContent = 'Manager List';
+    document.getElementById('dropdownMenuButtonDepartment').textContent = 'Department List';
+    }
+
 
     fetchJobs()
     fetchManagers();

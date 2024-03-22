@@ -4,7 +4,10 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path');
 const app = express();
+const cors = require('cors');
 const database = require('./database');
+
+
 
 // Configure express-handlebars engine
 app.engine(".hbs", exphbs.engine({
@@ -18,6 +21,10 @@ app.set("view engine", ".hbs");
 // Configure the public directory
 const publicDirectoryPath = path.join(__dirname, '/public');
 app.use(express.static(publicDirectoryPath));
+
+// Others
+app.use(cors());
+app.use(express.json());
 
 // ---------------------------------------------------------
 // ENDPOINTS
@@ -97,6 +104,19 @@ app.get('/api/getdepartmentsinfo', async (req, res) => {
         res.status(500).send('Internal server error');
     }
 });
+
+// Insert new employee record
+app.post('/hire-employee', async (req, res) => {
+    try {   
+        await database.createNewEmployee(req.body);
+
+        res.status(200).send('Employee hired successfully.');
+    } catch (error) {
+        console.error('Failed to hire employee:', error);
+        res.status(500).send('Failed to hire employee.');
+    }
+});
+
 
 // Log connection
 app.listen(HTTP_PORT, () => {
