@@ -117,6 +117,16 @@ app.post('/hire-employee', async (req, res) => {
     }
 });
 
+// Returns [employees] of hr_employees
+app.get('/api/getemployeesinfo', async (req, res) => {
+    try {
+        const employeesData = await database.getEmployeesInfo();
+
+        res.json(employeesData);
+    } catch (err) {
+        res.status(500).send('Internal server error');
+    }
+});
 
 // Log connection
 app.listen(HTTP_PORT, () => {
