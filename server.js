@@ -123,17 +123,19 @@ app.get('/api/getemployeesinfo', async (req, res) => {
         const employeesData = await database.getEmployeesInfo();
 
         res.json(employeesData);
-    } catch (err) {
+    } catch (err) { 
         res.status(500).send('Internal server error');
     }
 });
 
 // Returns job_title from hr_jobs
-app.get('/api/getjobtitle/', async (req, res) => {
+app.get('/api/getjobtitle', async (req, res) => {
     try {
-        const jobTitleData = await database.getJobTitle(req.body);
+        const jobId = req.query.jobId;
+        const jobTitleData = await database.getJobTitle(jobId);
 
-        res.json(jobTitleData);
+        res.json({ jobTitle: jobTitleData });
+
     } catch (err) {
         res.status(500).send('Internal server error');
     }
