@@ -151,7 +151,7 @@
                 const item = document.createElement('li');
                 const link = document.createElement('a');
                 link.className = 'dropdown-item';
-                link.textContent = `[${manager.EMPLOYEE_ID}]  ${manager.FIRST_NAME} ${manager.LAST_NAME}`; // Corrected
+                link.textContent = `[${manager.EMPLOYEE_ID}]  ${manager.FIRST_NAME} ${manager.LAST_NAME}`;
 
                 link.addEventListener('click', function(event) {
                     event.preventDefault(); 
@@ -165,8 +165,40 @@
         }
     }
 
-    fetchManagers();
+    async function fetchDepartments() {
+        try {
+            const response = await fetch('/api/getdepartmentsinfo');
+            const departments = await response.json();
+
+            console.log(departments);
+
+            const dropdownButton = document.getElementById('dropdownMenuButtonDepartment');
+            const dropdown = document.getElementById('departmentsInfoDropdown');
+
+            departments.forEach((department) => {
+
+                console.log(department);
+
+                const item = document.createElement('li');
+                const link = document.createElement('a');
+                link.className = 'dropdown-item';
+                link.textContent = `[${department.DEPARTMENT_ID}]  ${department.DEPARTMENT_NAME}`; 
+
+                link.addEventListener('click', function(event) {
+                    event.preventDefault(); 
+                    dropdownButton.textContent = this.textContent; 
+                });
+                item.appendChild(link);
+                dropdown.appendChild(item);
+            });
+        } catch (error) {
+            console.error("Failed to fetch jobs:", error); // Error log
+        }
+    }
+
     fetchJobs()
+    fetchManagers();
+    fetchDepartments();
     </script>
 
 </body>
