@@ -14,7 +14,7 @@ async function connectToOracle() {
     console.log('Connection established to the Database.');
 
   } catch (err) {
-    console.error('Error connecting to the database:', err);
+    console.error('[DB.js] Error connecting to the database:', err);
   } finally {
     if (connection) { 
       try {
@@ -53,7 +53,7 @@ async function getJobsInfo() {
     return rows; 
 
   } catch (err) {
-    console.error('Error retrieving job information:', err);
+    console.error('[DB.js] Error retrieving job information:', err);
     throw err;
   } finally {
     if (connection) {
@@ -89,7 +89,7 @@ async function getManagersInfo() {
     return rows; 
 
   } catch (err) {
-    console.error('Error retrieving manager information:', err);
+    console.error('[DB.js] Error retrieving manager information:', err);
     throw err;
   } finally {
     if (connection) {
@@ -125,7 +125,7 @@ async function getDepartmentsInfo() {
     return rows; 
 
   } catch (err) {
-    console.error('Error retrieving department information:', err);
+    console.error('[DB.js] Error retrieving department information:', err);
     throw err;
   } finally {
     if (connection) {
@@ -174,7 +174,7 @@ async function createNewEmployee(data) {
 
     //console.log('Employee hired successfully.');
   } catch (err) {
-    console.error('[DB] Error hiring employee:', err);
+    console.error('[DB.js] Error hiring employee:', err);
     throw err;
   } finally {
     if (connection) {
@@ -210,7 +210,7 @@ async function getEmployeesInfo() {
     return rows; 
 
   } catch (err) {
-    console.error('Error retrieving employees information:', err);
+    console.error('[DB.js] Error retrieving employees information:', err);
     throw err;
   } finally {
     if (connection) {
@@ -223,7 +223,38 @@ async function getEmployeesInfo() {
   }
 }
 
-getEmployeesInfo();
+async function getJobTitle(jobId) {
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection(dbConfig);
+
+    const result = await connection.execute(
+      `BEGIN GET_JOB_TITLE(:p_job_id, :p_job_title); END;`,
+      {
+          p_job_id: jobId,
+          p_job_title: { dir: oracledb.BIND_OUT, type: oracledb.STRING }
+      }
+    );
+    //console.log("Job Title:", result.outBinds.p_job_title);
+
+    return result.outBinds.p_job_title; 
+
+  } catch (err) {
+    console.error('[DB.js] Error retrieving job title information:', err);
+    throw err;
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+}
+
+getJobTitle('AD_PRES');
 
 module.exports = {
   getJobsInfo,
