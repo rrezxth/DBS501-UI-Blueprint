@@ -143,8 +143,16 @@ async function createNewEmployee(data) {
 
   try {
     connection = await oracledb.getConnection(dbConfig);
-    const { p_first_name, p_last_name, p_email, p_phone, p_salary, p_job_id, p_manager_id, p_department_id } = data;
 
+    
+    // Destructure to pcs
+    let { p_first_name, p_last_name, p_email, p_phone, p_salary, p_job_id, p_manager_id, p_department_id } = data;
+
+    // Convert
+    p_salary = Number(p_salary);
+    p_manager_id = Number(p_manager_id);
+    p_department_id = Number(p_department_id);
+    
     const result = await connection.execute(
       `BEGIN 
         PRC_HIRE_EMPLOYEE(:p_first_name, :p_last_name, :p_email, :p_phone, :p_salary, :p_job_id, :p_manager_id, :p_department_id);
@@ -166,7 +174,7 @@ async function createNewEmployee(data) {
 
     //console.log('Employee hired successfully.');
   } catch (err) {
-    console.error('Error hiring employee:', err);
+    console.error('[DB] Error hiring employee:', err);
     throw err;
   } finally {
     if (connection) {
