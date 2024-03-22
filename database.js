@@ -68,7 +68,7 @@ async function getManagersInfo() {
     return result.rows;
 
   } catch (err) {
-    console.error('Error retrieving job information:', err);
+    console.error('Error retrieving manager information:', err);
     throw err;
   } finally {
     if (connection) {
@@ -81,9 +81,46 @@ async function getManagersInfo() {
   }
 }
 
-//getManagersInfo();
+// 
+async function getDepartmentsInfo() {
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection(dbConfig);
+
+    const result = await connection.execute(
+      `BEGIN get_departments(:cursor); END;`,
+      { cursor: { dir: oracledb.BIND_OUT, type: oracledb.CURSOR } }
+    );
+
+    const resultSet = result.outBinds.cursor;
+    const rows = [];
+  
+    let rowArray;
+    while ((rowArray = await resultSet.getRow())) {
+      rows.push(rowArray);
+    }
+
+    await resultSet.close();
+    return rows; 
+
+  } catch (err) {
+    console.error('Error retrieving department information:', err);
+    throw err;
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+}
+
 
 module.exports = {
   getJobsInfo,
-  getManagersInfo
+  getManagersInfo,
+  getDepartmentsInfo
 };
