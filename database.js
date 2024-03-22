@@ -138,9 +138,50 @@ async function getDepartmentsInfo() {
   }
 }
 
+async function createNewEmployee(data) {
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection(dbConfig);
+    const { p_first_name, p_last_name, p_email, p_phone, p_salary, p_job_id, p_manager_id, p_department_id } = data;
+
+    const result = await connection.execute(
+      `BEGIN 
+        PRC_HIRE_EMPLOYEE(:p_first_name, :p_last_name, :p_email, :p_phone, :p_salary, :p_job_id, :p_manager_id, :p_department_id);
+      END;`,
+      {
+        p_first_name, 
+        p_last_name, 
+        p_email, 
+        p_phone,
+        p_salary,
+        p_job_id, 
+        p_manager_id,
+        p_department_id
+      }
+    );
+
+    // Commit
+    await connection.commit();
+
+    //console.log('Employee hired successfully.');
+  } catch (err) {
+    console.error('Error hiring employee:', err);
+    throw err;
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+}
 
 module.exports = {
   getJobsInfo,
   getManagersInfo,
-  getDepartmentsInfo
+  getDepartmentsInfo,
+  createNewEmployee
 };
