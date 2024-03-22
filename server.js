@@ -128,6 +128,20 @@ app.get('/api/getemployeesinfo', async (req, res) => {
     }
 });
 
+// Returns job_title from hr_jobs
+app.get('/api/getjobtitle/', async (req, res) => {
+    try {
+        const jobTitleData = await database.getJobTitle(req.body);
+
+        res.json(jobTitleData);
+    } catch (err) {
+        res.status(500).send('Internal server error');
+    }
+});
+
+
+
+
 // Log connection
 app.listen(HTTP_PORT, () => {
     console.log('Listening on PORT: ' + HTTP_PORT);
