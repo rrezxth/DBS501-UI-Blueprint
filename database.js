@@ -236,8 +236,7 @@ async function getJobTitle(jobId) {
           p_job_title: { dir: oracledb.BIND_OUT, type: oracledb.STRING }
       }
     );
-    //console.log("Job Title:", result.outBinds.p_job_title);
-
+    
     return result.outBinds.p_job_title; 
 
   } catch (err) {
@@ -254,12 +253,11 @@ async function getJobTitle(jobId) {
   }
 }
 
-getJobTitle('AD_PRES');
-
 module.exports = {
   getJobsInfo,
   getManagersInfo,
   getDepartmentsInfo,
   createNewEmployee,
-  getEmployeesInfo
+  getEmployeesInfo,
+  getJobTitle
 };
