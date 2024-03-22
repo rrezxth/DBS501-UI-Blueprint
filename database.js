@@ -187,9 +187,48 @@ async function createNewEmployee(data) {
   }
 }
 
+async function getEmployeesInfo() {
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection(dbConfig);
+
+    const result = await connection.execute(
+      `BEGIN get_employees(:cursor); END;`,
+      { cursor: { dir: oracledb.BIND_OUT, type: oracledb.CURSOR } }
+    );
+
+    const resultSet = result.outBinds.cursor;
+    const rows = [];
+  
+    let rowArray;
+    while ((rowArray = await resultSet.getRow())) {
+      rows.push(rowArray);
+    }
+
+    await resultSet.close();
+    return rows; 
+
+  } catch (err) {
+    console.error('Error retrieving employees information:', err);
+    throw err;
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+}
+
+getEmployeesInfo();
+
 module.exports = {
   getJobsInfo,
   getManagersInfo,
   getDepartmentsInfo,
-  createNewEmployee
+  createNewEmployee,
+  getEmployeesInfo
 };
