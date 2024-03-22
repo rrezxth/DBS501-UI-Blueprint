@@ -87,6 +87,17 @@ app.get('/api/getmanagersinfo', async (req, res) => {
     }
 });
 
+// Returns [departments] of hr_departments
+app.get('/api/getdepartmentsinfo', async (req, res) => {
+    try {
+        const departmentsData = await database.getDepartmentsInfo();
+
+        res.json(departmentsData);
+    } catch (err) {
+        res.status(500).send('Internal server error');
+    }
+});
+
 // Log connection
 app.listen(HTTP_PORT, () => {
     console.log('Listening on PORT: ' + HTTP_PORT);
