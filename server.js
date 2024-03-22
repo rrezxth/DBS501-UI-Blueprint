@@ -135,7 +135,6 @@ app.get('/api/getjobtitle', async (req, res) => {
         const jobTitleData = await database.getJobTitle(jobId);
 
         res.json({ jobTitle: jobTitleData });
-
     } catch (err) {
         res.status(500).send('Internal server error');
     }
