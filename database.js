@@ -16,7 +16,7 @@ async function connectToOracle() {
   } catch (err) {
     console.error('Error connecting to the database:', err);
   } finally {
-    if (connection) {
+    if (connection) { 
       try {
         await connection.close();
       } catch (err) {
