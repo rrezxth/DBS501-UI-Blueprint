@@ -36,8 +36,21 @@ async function getJobsInfo() {
   try {
     connection = await oracledb.getConnection(dbConfig);
 
-    const result = await connection.execute(`SELECT * FROM hr_jobs`);
-    return result.rows;
+    const result = await connection.execute(
+      `BEGIN get_jobs(:cursor); END;`,
+      { cursor: { dir: oracledb.BIND_OUT, type: oracledb.CURSOR } }
+    );
+
+    const resultSet = result.outBinds.cursor;
+    const rows = [];    // to be returned
+  
+    let rowArray;       // to save current row and be pushed into the array
+    while ((rowArray = await resultSet.getRow())) {
+      rows.push(rowArray);
+    }
+
+    await resultSet.close();
+    return rows; 
 
   } catch (err) {
     console.error('Error retrieving job information:', err);
@@ -59,13 +72,21 @@ async function getManagersInfo() {
   try {
     connection = await oracledb.getConnection(dbConfig);
 
-    const result = await connection.execute(`SELECT e.employee_id, e.first_name, e.last_name
-                                              FROM hr_employees e
-                                              JOIN hr_departments d ON e.department_id = d.department_id
-                                              WHERE d.manager_id = e.employee_id`);
-    //console.log(result);
-          
-    return result.rows;
+    const result = await connection.execute(
+      `BEGIN get_managers(:cursor); END;`,
+      { cursor: { dir: oracledb.BIND_OUT, type: oracledb.CURSOR } }
+    );
+
+    const resultSet = result.outBinds.cursor;
+    const rows = [];
+  
+    let rowArray;
+    while ((rowArray = await resultSet.getRow())) {
+      rows.push(rowArray);
+    }
+
+    await resultSet.close();
+    return rows; 
 
   } catch (err) {
     console.error('Error retrieving manager information:', err);
@@ -81,7 +102,6 @@ async function getManagersInfo() {
   }
 }
 
-// 
 async function getDepartmentsInfo() {
   let connection;
 
