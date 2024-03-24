@@ -144,36 +144,49 @@
     }
 
     function editRow(cogIcon) {
-        console.log('COG clicked!')
+        console.log('COG clicked!');
 
         const row = cogIcon.closest('tr');
-        const cells = row.querySelectorAll('td');
+        const cells = row.querySelectorAll('td:not(:last-child)'); // Exclude the last cell with the cog icon
         const form = document.getElementById('editEmployeeForm');
 
         // Clear the form first
         form.innerHTML = '';
 
         const fieldNames = ['EMPLOYEE_ID', 'NAME', 'EMAIL', 'PHONE_NUMBER', 'HIRE_DATE', 'JOB_ID', 'SALARY', 'COMMISSION_PCT', 'MANAGER_ID', 'DEPARTMENT_ID'];
-        
+        const editableFields = ['SALARY', 'PHONE_NUMBER', 'EMAIL']; // Fields that should be editable
+
         fieldNames.forEach((name, index) => {
-            if(index >= cells.length - 1) return;
+            const isEditable = editableFields.includes(name);
+            const value = cells[index].textContent; // Current cell value
 
             const inputGroup = document.createElement('div');
             inputGroup.className = 'mb-3';
 
             const label = document.createElement('label');
             label.className = 'form-label';
-            label.textContent = name.replace('_', ' ');
+            label.textContent = name.replace('_', ' ').toUpperCase();
             label.setAttribute('for', name);
 
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'form-control';
-            input.id = name;
-            input.value = cells[index].textContent; // Fill in the current cell value
-
             inputGroup.appendChild(label);
-            inputGroup.appendChild(input);
+
+            if (isEditable) {
+                // INPUT for mutable properties
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'form-control';
+                input.id = name;
+                input.value = value;
+                inputGroup.appendChild(input);
+            } else {
+                // LABEL for non-mutable properties
+                const staticText = document.createElement('span');
+                staticText.className = 'form-control-plaintext';
+                staticText.id = name;
+                staticText.textContent = value;
+                inputGroup.appendChild(staticText);
+            }
+
             form.appendChild(inputGroup);
         });
 
