@@ -253,6 +253,50 @@ async function getJobTitle(jobId) {
   }
 }
 
+async function updateEmployee(data) {
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection(dbConfig);
+
+    
+    // Destructure data
+    let { p_employee_id, p_email, p_phone, p_salary } = data;
+
+    // Convert
+    p_employee_id = Number(p_employee_id);
+    p_salary = Number(p_salary);
+
+    await connection.execute(
+      `BEGIN 
+        edit_employee(:p_employee_id :p_email, :p_phone, :p_salary;
+      END;`,
+      {
+        p_employee_id,
+        p_email, 
+        p_phone,
+        p_salary
+      }
+    );
+
+    // Commit
+    await connection.commit();
+
+    //console.log('Employee hired successfully.');
+  } catch (err) {
+    console.error('[DB.js] Error updating employee:', err);
+    throw err;
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+}
+
 connectToOracle();
 
 module.exports = {
