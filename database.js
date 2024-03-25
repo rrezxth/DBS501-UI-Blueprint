@@ -253,6 +253,8 @@ async function getJobTitle(jobId) {
   }
 }
 
+connectToOracle();
+
 module.exports = {
   getJobsInfo,
   getManagersInfo,
