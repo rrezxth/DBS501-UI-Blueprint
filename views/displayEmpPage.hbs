@@ -87,6 +87,7 @@
     <script>
     async function populateTable() {
         const tableBody = document.querySelector('.table tbody');
+        tableBody.innerHTML = '';
         try {
             // Fetch
             const response = await fetch('/api/getemployeesinfo');
@@ -188,6 +189,44 @@
         var modal = new bootstrap.Modal(document.getElementById('editEmployeeModal'));
         modal.show();
 
+    }
+
+    function saveChanges() {
+        const employeeIdLabel = document.querySelector('#editEmployeeForm #EMPLOYEE_ID');
+        const employee_id = employeeIdLabel.textContent;
+        
+
+        const emailInput = document.querySelector('#editEmployeeForm #EMAIL');
+        const email = emailInput.value;
+    
+        const phoneInput = document.querySelector('#editEmployeeForm #PHONE_NUMBER');
+        const phone = phoneInput.value;
+
+        const salaryInput = document.querySelector('#editEmployeeForm #SALARY');
+        const salary = salaryInput.value;
+
+        sendDataToServer(employee_id, email, phone, salary);
+    }
+
+    async function sendDataToServer(employee_id, email, phone, salary) {
+        try {
+            const data = { p_employee_id: employee_id, p_email: email, p_phone: phone, p_salary: salary };
+            const response = await fetch('/update-employee', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            // OK
+            alert(await response.text());   
+            var editEmployeeModal = bootstrap.Modal.getInstance(document.getElementById('editEmployeeModal'));
+            editEmployeeModal.hide();
+            await populateTable();
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
     populateTable();
