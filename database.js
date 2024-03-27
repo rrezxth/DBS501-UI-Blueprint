@@ -218,14 +218,12 @@ async function getJobTitle(jobId) {
     connection = await oracledb.getConnection(dbConfig);
 
     const result = await connection.execute(
-      `BEGIN GET_JOB_TITLE(:p_job_id, :p_job_title); END;`,
-      {
-          p_job_id: jobId,
-          p_job_title: { dir: oracledb.BIND_OUT, type: oracledb.STRING }
-      }
+      `SELECT GET_JOB_TITLE(:p_job_id) AS job_title FROM dual`,
+      { p_job_id: jobId },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
-    
-    return result.outBinds.p_job_title; 
+
+  return result.rows[0].JOB_TITLE;
 
   } catch (err) {
     console.error('[DB.js] Error retrieving job title information:', err);
@@ -341,6 +339,7 @@ async function createNewJob(data) {
 }
 
 connectToOracle();
+getJobTitle('AD_PRES');
 
 module.exports = {
   getJobsInfo,
