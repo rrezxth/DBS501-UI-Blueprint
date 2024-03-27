@@ -78,6 +78,7 @@
     <script>
     async function populateTable() {
         const tableBody = document.querySelector('.table tbody');
+        tableBody.innerHTML = '';
         try {
             // Fetch
             const response = await fetch('/api/getjobsinfo');
