@@ -144,33 +144,21 @@ async function createNewEmployee(data) {
   try {
     connection = await oracledb.getConnection(dbConfig);
 
-    
-    // Destructure to pcs
-    let { p_first_name, p_last_name, p_email, p_phone, p_salary, p_job_id, p_manager_id, p_department_id } = data;
-
-    // Convert
-    p_salary = Number(p_salary);
-    p_manager_id = Number(p_manager_id);
-    p_department_id = Number(p_department_id);
-    
-    const result = await connection.execute(
+    await connection.execute(
       `BEGIN 
         EMPLOYEE_HIRE_SP(:p_first_name, :p_last_name, :p_email, :p_phone, :p_salary, :p_job_id, :p_manager_id, :p_department_id);
       END;`,
       {
-        p_first_name, 
-        p_last_name, 
-        p_email, 
-        p_phone,
-        p_salary,
-        p_job_id, 
-        p_manager_id,
-        p_department_id
+        p_first_name: data.p_first_name, 
+        p_last_name: data.p_last_name, 
+        p_email: data.p_email, 
+        p_phone: data.p_phone,
+        p_salary: Number(data.p_salary),
+        p_job_id: data.p_job_id, 
+        p_manager_id: Number(data.p_manager_id),
+        p_department_id: Number(data.p_department_id)
       }
     );
-
-    // Commit
-    await connection.commit();
 
     //console.log('Employee hired successfully.');
   } catch (err) {
@@ -209,7 +197,7 @@ async function getEmployeesInfo() {
     await resultSet.close();
     return rows; 
 
-  } catch (err) {
+  } catch (err) { 
     console.error('[DB.js] Error retrieving employees information:', err);
     throw err;
   } finally {
