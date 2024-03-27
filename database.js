@@ -155,7 +155,7 @@ async function createNewEmployee(data) {
     
     const result = await connection.execute(
       `BEGIN 
-        PRC_HIRE_EMPLOYEE(:p_first_name, :p_last_name, :p_email, :p_phone, :p_salary, :p_job_id, :p_manager_id, :p_department_id);
+        EMPLOYEE_HIRE_SP(:p_first_name, :p_last_name, :p_email, :p_phone, :p_salary, :p_job_id, :p_manager_id, :p_department_id);
       END;`,
       {
         p_first_name, 
@@ -258,7 +258,6 @@ async function updateEmployee(data) {
 
   try {
     connection = await oracledb.getConnection(dbConfig);
-
     
     // Destructure data
     let { p_employee_id, p_email, p_phone, p_salary } = data;
@@ -267,20 +266,20 @@ async function updateEmployee(data) {
     p_employee_id = Number(p_employee_id);
     p_salary = Number(p_salary);
 
+    console.log({ p_employee_id, p_email, p_phone, p_salary });
+
     await connection.execute(
       `BEGIN 
-        edit_employee(:p_employee_id :p_email, :p_phone, :p_salary;
+        edit_employee(:p_employee_id, :p_email, :p_phone, :p_salary);
       END;`,
       {
-        p_employee_id,
-        p_email, 
-        p_phone,
-        p_salary
-      }
+        p_employee_id: p_employee_id,
+        p_email: p_email,
+        p_phone: p_phone,
+        p_salary: p_salary
+      },
+      { autoCommit: true } 
     );
-
-    // Commit
-    await connection.commit();
 
     //console.log('Employee hired successfully.');
   } catch (err) {
@@ -305,5 +304,6 @@ module.exports = {
   getDepartmentsInfo,
   createNewEmployee,
   getEmployeesInfo,
-  getJobTitle
+  getJobTitle,
+  updateEmployee
 };
