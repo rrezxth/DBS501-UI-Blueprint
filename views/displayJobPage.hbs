@@ -121,7 +121,7 @@
         form.innerHTML = '';
 
         const fieldNames = ['JOB_ID', 'JOB_TITLE', 'MIN_SALARY', 'MAX_SALARY'];
-        const editableFields = ['JOB_TITLE'];
+        const editableFields = ['JOB_TITLE', 'MIN_SALARY', 'MAX_SALARY'];
 
         fieldNames.forEach((name, index) => {
             const isEditable = editableFields.includes(name);
@@ -161,6 +161,44 @@
         // Show the modal
         var modal = new bootstrap.Modal(document.getElementById('editJobModal'));
         modal.show();
+    }
+
+    function saveChanges() {
+        const jobIdLabel = document.querySelector('#editJobForm #JOB_ID');
+        const jobId = jobIdLabel.textContent;
+        
+
+        const jobTitleTxtInput = document.querySelector('#editJobForm #JOB_TITLE');
+        const jobTitle = jobTitleTxtInput.value;
+    
+        const minSalaryTxtInput = document.querySelector('#editJobForm #MIN_SALARY');
+        const minSalary = minSalaryTxtInput.value;
+
+        const maxSalaryTxtInput = document.querySelector('#editJobForm #MAX_SALARY');
+        const maxSalary = maxSalaryTxtInput.value;
+
+        sendDataToServer(jobId, jobTitle, minSalary, maxSalary);
+    }
+
+    async function sendDataToServer(jobId, jobTitle, minSalary, maxSalary) {
+        try {
+            const data = { p_job_id: jobId, p_job_title: jobTitle, p_min_salary: minSalary, p_max_salary: maxSalary };
+            const response = await fetch('/update-job', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            // OK
+            alert(await response.text());   
+            var editEmployeeModal = bootstrap.Modal.getInstance(document.getElementById('editJobModal'));
+            editEmployeeModal.hide();
+            await populateTable();
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
     populateTable();
