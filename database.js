@@ -37,7 +37,9 @@ async function getJobsInfo() {
     connection = await oracledb.getConnection(dbConfig);
 
     const result = await connection.execute(
-      `BEGIN get_jobs(:cursor); END;`,
+      `BEGIN 
+        get_jobs(:cursor); 
+      END;`,
       { cursor: { dir: oracledb.BIND_OUT, type: oracledb.CURSOR } }
     );
 
@@ -182,7 +184,9 @@ async function getEmployeesInfo() {
     connection = await oracledb.getConnection(dbConfig);
 
     const result = await connection.execute(
-      `BEGIN get_employees(:cursor); END;`,
+      `BEGIN 
+        get_employees(:cursor); 
+      END;`,
       { cursor: { dir: oracledb.BIND_OUT, type: oracledb.CURSOR } }
     );
 
