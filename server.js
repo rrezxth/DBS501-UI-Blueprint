@@ -121,7 +121,6 @@ app.get('/api/getemployeesinfo', async (req, res) => {
 // Update [employee]
 app.post('/update-employee', async (req, res) => {
     try {   
-        console.log(req.body);
         await database.updateEmployee(req.body);
 
         res.status(200).send('Employee updated successfully.');
@@ -147,13 +146,12 @@ app.get('/api/getjobtitle', async (req, res) => {
 // Update [job] title
 app.post('/update-job', async (req, res) => {
     try {   
-        console.log(req.body);
         await database.updateJob(req.body);
 
-        res.status(200).send('Employee updated successfully.');
+        res.status(200).send('Job updated successfully.');
     } catch (error) {
         //console.error('Failed to hire employee:', error);
-        res.status(500).send('Failed to update employee.');
+        res.status(500).send('Failed to update job.');
     }
 });
 
