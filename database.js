@@ -274,7 +274,71 @@ async function updateEmployee(data) {
   }
 }
 
+async function updateJob(data) {
+  let connection;
 
+  try {
+    connection = await oracledb.getConnection(dbConfig);
+
+    await connection.execute(
+      `BEGIN 
+        edit_job(:p_job_id, :p_job_title, :p_min_salary, :p_max_salary);
+      END;`,
+      {
+        p_job_id: data.p_job_id,
+        p_job_title: data.p_job_title,
+        p_min_salary: Number(data.p_min_salary),
+        p_max_salary: Number(data.p_max_salary)
+      }
+    );
+
+    //console.log('Employee hired successfully.');
+  } catch (err) {
+    console.error('[DB.js] Error updating job:', err);
+    throw err;
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+}
+
+async function createNewJob(data) {
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection(dbConfig);
+
+    await connection.execute(
+      `BEGIN 
+        CREATE_NEW_JOB(:p_job_id, :p_job_title, :p_min_salary, :p_max_salary);
+      END;`,
+      {
+        p_job_id: data.p_job_id,
+        p_job_title: data.p_job_title,
+        p_min_salary: Number(data.p_min_salary),
+        p_max_salary: Number(data.p_max_salary)
+      }
+    );
+
+    //console.log('Employee hired successfully.');
+  } catch (err) {
+    console.error('[DB.js] Error creating job:', err);
+    throw err;
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+}
 
 connectToOracle();
 
@@ -284,6 +348,8 @@ module.exports = {
   getDepartmentsInfo,
   createNewEmployee,
   getEmployeesInfo,
+  updateEmployee,
   getJobTitle,
-  updateEmployee
+  updateJob,
+  createNewJob
 };
