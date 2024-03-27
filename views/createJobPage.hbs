@@ -29,21 +29,21 @@
     <div class="container mt-5">
     <div class="row justify-content-md-center">
         <div class="col-md-8">
-            <form>
+            <form id="createJobForm">
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <input type="text" class="form-control" placeholder="Job ID" aria-label="Job ID">
+                        <input type="text" class="form-control" name="p_job_id" placeholder="Job ID" aria-label="Job ID">
                     </div>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" placeholder="Job Title" aria-label="Job Title">
+                        <input type="text" class="form-control" name="p_job_title" placeholder="Job Title" aria-label="Job Title">
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <input type="text" class="form-control" placeholder="Minimum Salary" aria-label="Minimum Salary">
+                        <input type="text" class="form-control" name="p_min_salary" placeholder="Minimum Salary" aria-label="Minimum Salary">
                     </div>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" placeholder="Maximum Salary" aria-label="Maximum Salary">
+                        <input type="text" class="form-control" name="p_max_salary" placeholder="Maximum Salary" aria-label="Maximum Salary">
                     </div>
                 </div>
 
@@ -57,6 +57,45 @@
         </div>
     </div>
     </div>
+
+    <script>
+    // Handle form submission
+    document.getElementById('createJobForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        const data = {};
+        formData.forEach((value, key) => { data[key] = value; });
+
+        fetch('/create-job', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Response failed.'); 
+            }
+            return response.text();
+        })
+        .then(message => {
+            alert(message);
+            resetFormAndDropdowns();
+        })
+        .catch(error => {
+            console.error('Error creating job:', error);
+            alert('Failed to create job.'); // Display error message
+        });
+    });
+
+    function resetFormAndDropdowns() {
+    // Clear text fields
+        document.querySelectorAll('#createJobForm input[type="text"]').forEach(input => {
+            input.value = '';
+        });
+    }
+
+    </script>
 
 </body>
 </html>
