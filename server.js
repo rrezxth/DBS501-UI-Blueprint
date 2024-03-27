@@ -44,13 +44,6 @@ app.get('/displayAllEmployees', (req, res) => {
     res.render('displayEmpPage');
 });
 
-/* Switching to modal.show
-// Edit employee information
-app.get('/displayAllEmployees/editEmployee', (req, res) => {
-    res.render('editEmpPage');
-});
-*/
-
 // Find job title page
 app.get('/findJobTitle', (req, res) => {
     res.render('findJobPage');   
@@ -61,13 +54,6 @@ app.get('/displayAllJobInfo', (req, res) => {
     res.render('displayJobPage');   
 });
 
-/* Switching to modal.show
-// Edit job info
-app.get('/displayAllJobInfo/editJob', (req, res) => {
-    res.render('editJobPage');   
-});
-*/
-
 // Create job info
 app.get('/createNewJob', (req, res) => {
     res.render('createJobPage');   
@@ -76,7 +62,7 @@ app.get('/createNewJob', (req, res) => {
 // ---------------------------------------------------------
 // APIs
 
-// Returns * of hr_jobs
+// Returns * [rows] of hr_jobs
 app.get('/api/getjobsinfo', async (req, res) => {
     try {
         const jobsData = await database.getJobsInfo();
@@ -129,6 +115,19 @@ app.get('/api/getemployeesinfo', async (req, res) => {
         res.json(employeesData);
     } catch (err) { 
         res.status(500).send('Internal server error');
+    }
+});
+
+// Update [employee]
+app.post('/update-employee', async (req, res) => {
+    try {   
+        console.log(req.body);
+        await database.updateEmployee(req.body);
+
+        res.status(200).send('Employee updated successfully.');
+    } catch (error) {
+        //console.error('Failed to hire employee:', error);
+        res.status(500).send('Failed to update employee.');
     }
 });
 
