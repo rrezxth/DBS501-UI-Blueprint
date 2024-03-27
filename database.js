@@ -246,27 +246,17 @@ async function updateEmployee(data) {
 
   try {
     connection = await oracledb.getConnection(dbConfig);
-    
-    // Destructure data
-    let { p_employee_id, p_email, p_phone, p_salary } = data;
-
-    // Convert
-    p_employee_id = Number(p_employee_id);
-    p_salary = Number(p_salary);
-
-    console.log({ p_employee_id, p_email, p_phone, p_salary });
 
     await connection.execute(
       `BEGIN 
         edit_employee(:p_employee_id, :p_email, :p_phone, :p_salary);
       END;`,
       {
-        p_employee_id: p_employee_id,
-        p_email: p_email,
-        p_phone: p_phone,
-        p_salary: p_salary
-      },
-      { autoCommit: true } 
+        p_employee_id: Number(data.p_employee_id),
+        p_email: data.p_email,
+        p_phone: data.p_phone,
+        p_salary: Number(data.p_salary)
+      }
     );
 
     //console.log('Employee hired successfully.');
@@ -283,6 +273,8 @@ async function updateEmployee(data) {
     }
   }
 }
+
+
 
 connectToOracle();
 
