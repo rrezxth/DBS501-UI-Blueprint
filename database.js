@@ -343,7 +343,6 @@ async function createNewJob(data) {
 }
 
 connectToOracle();
-getJobTitle('AD_PRES');
 
 module.exports = {
   getJobsInfo,
