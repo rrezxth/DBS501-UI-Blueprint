@@ -143,6 +143,32 @@ app.get('/api/getjobtitle', async (req, res) => {
     }
 });
 
+// TODO
+// Update [job] title
+app.post('/update-job', async (req, res) => {
+    try {   
+        console.log(req.body);
+        await database.updateJob(req.body);
+
+        res.status(200).send('Employee updated successfully.');
+    } catch (error) {
+        //console.error('Failed to hire employee:', error);
+        res.status(500).send('Failed to update employee.');
+    }
+});
+
+// Insert new job record
+app.post('/create-job', async (req, res) => {
+    try {   
+        await database.createNewJob(req.body);
+
+        res.status(200).send('Job created successfully.');
+    } catch (error) {
+        console.error('Failed to create job:', error);
+        res.status(500).send('Failed to create job.');
+    }
+});
+
 // Log connection
 app.listen(HTTP_PORT, () => {
     console.log('Listening on PORT: ' + HTTP_PORT);
