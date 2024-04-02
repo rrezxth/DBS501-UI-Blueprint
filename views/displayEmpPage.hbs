@@ -212,7 +212,7 @@
         try {
             const data = { p_employee_id: employee_id, p_email: email, p_phone: phone, p_salary: salary };
             const response = await fetch('/update-employee', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },

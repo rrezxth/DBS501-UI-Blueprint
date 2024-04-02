@@ -184,7 +184,7 @@
         try {
             const data = { p_job_id: jobId, p_job_title: jobTitle, p_min_salary: minSalary, p_max_salary: maxSalary };
             const response = await fetch('/update-job', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
