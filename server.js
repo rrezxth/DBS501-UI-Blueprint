@@ -100,7 +100,7 @@ app.post('/hire-employee', async (req, res) => {
     try {   
         await database.createNewEmployee(req.body);
 
-        res.status(200).send('Employee hired successfully.');
+        res.status(201).send('Employee hired successfully.');
     } catch (error) {
         console.error('Failed to hire employee:', error);
         res.status(500).send('Failed to hire employee.');
@@ -119,7 +119,7 @@ app.get('/api/getemployeesinfo', async (req, res) => {
 });
 
 // Update [employee]
-app.post('/update-employee', async (req, res) => {
+app.put('/update-employee', async (req, res) => {
     try {   
         await database.updateEmployee(req.body);
 
@@ -144,7 +144,7 @@ app.get('/api/getjobtitle', async (req, res) => {
 
 // TODO
 // Update [job] title
-app.post('/update-job', async (req, res) => {
+app.put('/update-job', async (req, res) => {
     try {   
         await database.updateJob(req.body);
 
@@ -160,7 +160,7 @@ app.post('/create-job', async (req, res) => {
     try {   
         await database.createNewJob(req.body);
 
-        res.status(200).send('Job created successfully.');
+        res.status(201).send('Job created successfully.');
     } catch (error) {
         console.error('Failed to create job:', error);
         res.status(500).send('Failed to create job.');
