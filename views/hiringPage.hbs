@@ -20,6 +20,22 @@
     crossorigin="anonymous"
     ></script>
 
+    <style>
+    .input-error {
+        border: 2px solid red;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+    </style>
+
 </head>
 <body>
     <!-- Navigation bar -->
@@ -32,21 +48,21 @@
                 <form id="hireEmployeeForm">
                     <div class="row mb-3">
                         <div class="col-md-4">
-                            <input type="text" class="form-control" name="p_first_name" placeholder="First Name" required>
+                            <input type="text" class="form-control" name="p_first_name" id="fNameInputId" placeholder="First Name" required>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" name="p_last_name" placeholder="Last Name" required>
+                            <input type="text" class="form-control" name="p_last_name" id="lNameInputId" placeholder="Last Name" required>
                         </div>
                         <div class="col-md-4">
-                            <input type="email" class="form-control" name="p_email" placeholder="Email" required>
+                            <input type="email" class="form-control" name="p_email" id="emailInputId" placeholder="Email" required>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-4">
-                            <input type="text" class="form-control" name="p_phone" placeholder="Phone" required>
+                            <input type="text" class="form-control" name="p_phone" id="phoneInputId" placeholder="Phone" required>
                         </div>
                         <div class="col-md-4">
-                            <input type="number" class="form-control" name="p_salary" placeholder="Salary" required>
+                            <input type="number" class="form-control" name="p_salary" id="salaryInputId" placeholder="Salary" step="disabled" required>
                         </div>
                     </div>
                     <!-- Hidden fields for job, manager, and department IDs -->
