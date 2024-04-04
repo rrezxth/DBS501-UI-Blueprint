@@ -97,10 +97,10 @@
                 validationErrors.push('** Invalid Job Title. Only letters and spaces are allowed.');
                 addErrorBorder('jobTitleInputId');
             } else if (key === 'p_min_salary' && !validateSalary(value)) {
-                validationErrors.push('** Invalid Salary. Only digits are allowed.');
+                validationErrors.push('** Invalid Salary. Only non-negative digits are allowed.');
                 addErrorBorder('minSalaryInputId');
             } else if (key === 'p_max_salary' && !validateSalary(value)) {
-                validationErrors.push('** Invalid Salary. Only digits are allowed.');
+                validationErrors.push('** Invalid Salary. Only non-negative digits are allowed.');
                 addErrorBorder('maxSalaryInputId');
             }
         });
