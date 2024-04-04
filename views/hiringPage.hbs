@@ -38,7 +38,7 @@
                             <input type="text" class="form-control" name="p_last_name" placeholder="Last Name" required>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" name="p_email" placeholder="Email" required>
+                            <input type="email" class="form-control" name="p_email" placeholder="Email" required>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -46,13 +46,13 @@
                             <input type="text" class="form-control" name="p_phone" placeholder="Phone" required>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" name="p_salary" placeholder="Salary" required>
+                            <input type="number" class="form-control" name="p_salary" placeholder="Salary" required>
                         </div>
                     </div>
                     <!-- Hidden fields for job, manager, and department IDs -->
-                    <input type="hidden" name="p_job_id" id="jobIdField">
-                    <input type="hidden" name="p_manager_id" id="managerIdField">
-                    <input type="hidden" name="p_department_id" id="departmentIdField">
+                    <input type="hidden" name="p_job_id" id="jobIdField" required>
+                    <input type="hidden" name="p_manager_id" id="managerIdField" required>
+                    <input type="hidden" name="p_department_id" id="departmentIdField" required>
 
                     <div class="row mb-3">
                         <div class="col-md-8">
@@ -95,7 +95,7 @@
 
                     <div class="row">
                         <div class="col-md-12 mt-5">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Submit</button>
                         </div>
                     </div>
                 </form>
@@ -127,6 +127,7 @@
                     event.preventDefault(); 
                     dropdownButton.textContent = this.textContent; 
                     document.getElementById('jobIdField').value = job.JOB_ID;
+                    checkRequiredFields();
                 });
                 item.appendChild(link);
                 dropdown.appendChild(item);
@@ -154,12 +155,13 @@
                     event.preventDefault(); 
                     dropdownButton.textContent = this.textContent;
                     document.getElementById('managerIdField').value = manager.EMPLOYEE_ID;
+                    checkRequiredFields();
                 });
                 item.appendChild(link);
                 dropdown.appendChild(item);
             });
         } catch (error) {
-            console.error("Failed to fetch jobs:", error); // Error log
+            console.error("Failed to fetch managers:", error); // Error log
         }
     }
 
@@ -181,13 +183,14 @@
                 link.addEventListener('click', function(event) {
                     event.preventDefault(); 
                     dropdownButton.textContent = this.textContent;
-                    document.getElementById('departmentIdField').value = department.DEPARTMENT_ID;
+                    document.getElementById('departmentIdField').value = department.EMPLOYEE_ID;
+                    checkRequiredFields();
                 });
                 item.appendChild(link);
                 dropdown.appendChild(item);
             });
         } catch (error) {
-            console.error("Failed to fetch jobs:", error); // Error log
+            console.error("Failed to fetch departments:", error); // Error log
         }
     }
 
@@ -220,16 +223,38 @@
         });
     });
 
-    function resetFormAndDropdowns() {
-    // Clear text fields
-    document.querySelectorAll('#hireEmployeeForm input[type="text"]').forEach(input => {
-        input.value = '';
-    });
+    // Handle submit button enable/disable
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Real-time validation
+        function addInputEventListeners() {
+            const requiredInputs = document.querySelectorAll('input[required]');
+            requiredInputs.forEach(input => {
+                // Use 'input' as event
+                input.addEventListener('input', checkRequiredFields);
+            });
+        }
 
-    // Reset hidden inputs
-    document.querySelectorAll('#hireEmployeeForm input[type="hidden"]').forEach(input => {
-        input.value = '';
+        addInputEventListeners();
     });
+        
+    // Check if all required fields aren't empty
+    function checkRequiredFields() {
+        const submitBtn = document.getElementById('submitBtn');
+        const requiredInputs = document.querySelectorAll('input[required]');
+        const allFilled = Array.from(requiredInputs).every(input => input.value.trim() !== '');
+        submitBtn.disabled = !allFilled;
+    }
+
+    function resetFormAndDropdowns() {
+        // Clear text fields
+        document.querySelectorAll('#hireEmployeeForm input[type="text"]').forEach(input => {
+            input.value = '';
+        });
+
+        // Reset hidden inputs
+        document.querySelectorAll('#hireEmployeeForm input[type="hidden"]').forEach(input => {
+            input.value = '';
+        });
 
     // Reset dropdowns
     document.getElementById('dropdownMenuButtonJob').textContent = 'Job List';
@@ -237,9 +262,14 @@
     document.getElementById('dropdownMenuButtonDepartment').textContent = 'Department List';
     }
 
-    fetchJobs()
-    fetchManagers();
-    fetchDepartments();
+    Promise.all([fetchJobs(), fetchManagers(), fetchDepartments()])
+    .then(() => {
+        console.log("All data fetched successfully");
+    })
+    .catch((error) => {
+        console.error("Error fetching initial data:", error);
+    });
+
     </script>
 
 </body>

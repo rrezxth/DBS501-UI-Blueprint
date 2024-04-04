@@ -4,10 +4,8 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path');
 const app = express();
-const cors = require('cors');
+//const cors = require('cors');
 const database = require('./database');
-
-
 
 // Configure express-handlebars engine
 app.engine(".hbs", exphbs.engine({
@@ -23,7 +21,7 @@ const publicDirectoryPath = path.join(__dirname, '/public');
 app.use(express.static(publicDirectoryPath));
 
 // Others
-app.use(cors());
+//app.use(cors());
 app.use(express.json());
 
 // ---------------------------------------------------------
