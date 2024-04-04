@@ -327,10 +327,17 @@ async function createNewJob(data) {
       }
     );
 
+    return { success: true, message: "Job created successfully." };
     //console.log('Employee hired successfully.');
-  } catch (err) {
-    console.error('[DB.js] Error creating job:', err);
-    throw err;
+  } catch (error) {
+    // Check if the error is a primary key constraint violation
+    if (error.code === 'ORA-00001') {
+      // Customize the message as needed
+      return { success: false, message: 'A job with the given ID already exists.' + error.message };
+    } else {
+      // Handle other types of errors appropriately
+      return { success: false, message: '[DB.js] Error creating job:' + error.message };
+    }
   } finally {
     if (connection) {
       try {

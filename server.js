@@ -101,7 +101,7 @@ app.post('/hire-employee', async (req, res) => {
         res.status(201).send('Employee hired successfully.');
     } catch (error) {
         console.error('Failed to hire employee:', error);
-        res.status(500).send('Failed to hire employee.');
+        res.status(500).send('Failed to hire employee due to server error..');
     }
 });
 
@@ -124,7 +124,7 @@ app.put('/update-employee', async (req, res) => {
         res.status(200).send('Employee updated successfully.');
     } catch (error) {
         //console.error('Failed to hire employee:', error);
-        res.status(500).send('Failed to update employee.');
+        res.status(500).send('Failed to update employee due to server error..');
     }
 });
 
@@ -140,7 +140,6 @@ app.get('/api/getjobtitle', async (req, res) => {
     }
 });
 
-// TODO
 // Update [job] title
 app.put('/update-job', async (req, res) => {
     try {   
@@ -149,19 +148,26 @@ app.put('/update-job', async (req, res) => {
         res.status(200).send('Job updated successfully.');
     } catch (error) {
         //console.error('Failed to hire employee:', error);
-        res.status(500).send('Failed to update job.');
+        res.status(500).send('Failed to update job due to server error..');
     }
 });
 
 // Insert new job record
 app.post('/create-job', async (req, res) => {
     try {   
-        await database.createNewJob(req.body);
-
-        res.status(201).send('Job created successfully.');
+        const result = await database.createNewJob(req.body);
+        if (result.success) {
+            res.status(201).send(result.message); // Job created successfully
+        } else {
+            if (result.message.includes('ORA-00001')) {
+                res.status(409).json({ error: 'JOB_ID already exists.' }); 
+            } else {
+                res.status(500).json({ error: result.message }); // Other errors
+            }
+        }
     } catch (error) {
-        console.error('Failed to create job:', error);
-        res.status(500).send('Failed to create job.');
+        //console.error('Failed to create job:', error);
+        res.status(500).send('Failed to create job due to server error.');
     }
 });
 
