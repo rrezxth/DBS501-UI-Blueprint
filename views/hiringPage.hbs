@@ -236,7 +236,7 @@
                 validationErrors.push('** Invalid Phone. Only digits and standard symbols are allowed.');
                 addErrorBorder('phoneInputId');
             } else if (key === 'p_salary' && !validateSalary(value)) {
-                validationErrors.push('** Invalid Salary. Only digits are allowed.');
+                validationErrors.push('** Invalid Salary. Only non-negative digits are allowed.');
                 addErrorBorder('salaryInputId');
             }
         });

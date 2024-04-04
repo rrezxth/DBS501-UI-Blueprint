@@ -30,11 +30,11 @@ function validateJobId(jobId) {
 
 function addErrorBorder(inputId) {
     document.getElementById(inputId).classList.add('input-error');
- }
+}
  
  function removeErrorBorder(inputId) {
     document.getElementById(inputId).classList.remove('input-error');
- }
+}
  
 
 // Exporting validators if using modules

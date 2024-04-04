@@ -129,10 +129,6 @@
                     // For successful requests, show a success message and reset the form
                     return response.text().then(message => {
                         alert(message);
-                        removeErrorBorder('jobInputId');
-                        removeErrorBorder('jobTitleInputId');
-                        removeErrorBorder('minSalaryInputId');
-                        removeErrorBorder('maxSalaryInputId');
                         resetFormAndDropdowns(); // Only reset when successful
                     });
                 }
@@ -157,6 +153,11 @@
         document.querySelectorAll('#createJobForm input[type="text"], #createJobForm input[type="number"]').forEach(input => {
             input.value = '';
         });
+
+        removeErrorBorder('jobInputId');
+        removeErrorBorder('jobTitleInputId');
+        removeErrorBorder('minSalaryInputId');
+        removeErrorBorder('maxSalaryInputId');
     }
 
     </script>
