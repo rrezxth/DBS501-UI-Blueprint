@@ -16,15 +16,15 @@ function validateEmail(email) {
     return regex.test(email);
 }
 
-// Numbers only, no alphas or symbols
+// Non-negative numbers only, no alphas or symbols
 function validateSalary(salary) {
     const regex = /^\d+$/; 
-    return regex.test(salary);
+    return regex.test(salary) && parseInt(salary) >= 0;
 }
 
-// JOB_ID proper format ABC_ABC
+// JOB_ID proper format A-Z_A-Z
 function validateJobId(jobId) {
-    const regex = /^[A-Z]_[A-Z]$/;
+    const regex = /^[A-Z]+(?:_[A-Z]+)*$/;
     return regex.test(jobId);
 }
 
