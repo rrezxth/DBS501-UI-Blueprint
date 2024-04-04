@@ -27,35 +27,35 @@
 
     <!-- Text fields fill up form -->
     <div class="container mt-5">
-    <div class="row justify-content-md-center">
-        <div class="col-md-8">
-            <form id="createJobForm">
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="p_job_id" placeholder="Job ID" aria-label="Job ID">
+    <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form id="createJobForm">
+                    <div class="row mb-3">
+                        <div class="col-md-3 offset-md-2"> 
+                            <input type="text" class="form-control" name="p_job_id" id="jobIdInput" placeholder="Job ID" aria-label="Job ID" required>
+                        </div>
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" name="p_job_title" id="jobTitleInput" placeholder="Job Title" aria-label="Job Title">
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="p_job_title" placeholder="Job Title" aria-label="Job Title">
+                    <div class="row mb-3">
+                        <div class="col-md-3 offset-md-2">
+                            <input type="text" class="form-control" name="p_min_salary" id="minSalaryInput" placeholder="Minimum Salary" aria-label="Minimum Salary">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" name="p_max_salary" id="maxSalaryInput" placeholder="Maximum Salary" aria-label="Maximum Salary">
+                        </div>
                     </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="p_min_salary" placeholder="Minimum Salary" aria-label="Minimum Salary">
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="p_max_salary" placeholder="Maximum Salary" aria-label="Maximum Salary">
-                    </div>
-                </div>
 
-                <!-- button -->
-                <div class="row mt-4 mb-3"> 
-                    <div class="col-md-12 mt-5">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                    <!-- button -->
+                    <div class="row mt-5 mb-3"> 
+                        <div class="col-md-8 offset-md-2"> 
+                            <button type="submit" class="btn btn-primary btn-block" id="submitBtn" disabled>Submit</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
     </div>
 
     <script>
