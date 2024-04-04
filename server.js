@@ -127,9 +127,17 @@ app.get('/api/getemployeesinfo', async (req, res) => {
 // Update [employee]
 app.put('/update-employee', async (req, res) => {
     try {   
-        await database.updateEmployee(req.body);
-
-        res.status(200).send('Employee updated successfully.');
+        const result = await database.updateEmployee(req.body);
+        
+        if (result.success) {
+            res.status(201).send('Employee updated successfully.');
+        } else {
+            if (result.message.includes('ORA-20100')) {
+                res.status(409).json({ error: 'Salary value out of range.' }); 
+            } else {
+                res.status(500).json({ error: result.message }); // Other errors
+            }
+        }
     } catch (error) {
         //console.error('Failed to hire employee:', error);
         res.status(500).send('Failed to update employee due to server error..');

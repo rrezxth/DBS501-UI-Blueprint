@@ -266,11 +266,16 @@ async function updateEmployee(data) {
         p_salary: Number(data.p_salary)
       }
     );
-
+    return { success: true };
     //console.log('Employee hired successfully.');
-  } catch (err) {
-    console.error('[DB.js] Error updating employee:', err);
-    throw err;
+  } catch (error) {
+    // Check if the error is a primary key constraint violation
+    if (error.code === 'ORA-00001') {
+      return { success: false, message: 'A job with the given ID already exists.' + error.message };
+    } else {
+      // Other errors
+      return { success: false, message: '[DB.js] Error creating job:' + error.message };
+    }
   } finally {
     if (connection) {
       try {

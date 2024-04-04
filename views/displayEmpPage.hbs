@@ -225,7 +225,6 @@
             // also hides the modal
             sendDataToServer(employee_id, email, phone, salary);
         }
-
     }
 
     async function sendDataToServer(employee_id, email, phone, salary) {
@@ -239,11 +238,18 @@
                 body: JSON.stringify(data),
             });
 
-            // OK
-            alert(await response.text());   
-            var editEmployeeModal = bootstrap.Modal.getInstance(document.getElementById('editEmployeeModal'));
-            editEmployeeModal.hide();
-            await populateTable();
+            if (!response.ok) {
+                const errorResponse = await response.json(); 
+                alert(errorResponse.error);
+                document.querySelector('#editEmployeeForm #SALARY').classList.add('input-error');
+            } else {
+                // OK
+                alert(await response.text());   
+                var editEmployeeModal = bootstrap.Modal.getInstance(document.getElementById('editEmployeeModal'));
+                editEmployeeModal.hide();
+                await populateTable();
+            }
+
         } catch (error) {
             console.error('Error:', error);
         }
