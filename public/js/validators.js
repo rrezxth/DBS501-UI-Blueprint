@@ -6,7 +6,7 @@ function validateName(name) {
 
 // No alphabets, symbols are okay
 function validatePhone(phone) {
-    const regex = /^[0-9+\s()-]+$/; 
+    const regex = /^[0-9+\s()-\.]+$/; 
     return regex.test(phone);
 }
 

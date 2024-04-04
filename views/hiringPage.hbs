@@ -119,9 +119,8 @@
         </div>
     </div>
 
-    <!-- Bootstrap Bundle with Popper 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-    -->
+
+    <script src="/js/validators.js"></script>
 
     <!-- Fetch JOBS -->
     <script>
@@ -199,7 +198,7 @@
                 link.addEventListener('click', function(event) {
                     event.preventDefault(); 
                     dropdownButton.textContent = this.textContent;
-                    document.getElementById('departmentIdField').value = department.EMPLOYEE_ID;
+                    document.getElementById('departmentIdField').value = department.DEPARTMENT_ID;
                     checkRequiredFields();
                 });
                 item.appendChild(link);
@@ -210,37 +209,9 @@
         }
     }
 
-    // Handle form submission
-    document.getElementById('hireEmployeeForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const formData = new FormData(this);
-        const data = {};
-        formData.forEach((value, key) => { data[key] = value; });
-
-        fetch('/hire-employee', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        })
-       .then(response => {
-            if (!response.ok) {
-                throw new Error('Response failed.'); 
-            }
-            return response.text();
-        })
-        .then(message => {
-            alert(message);
-            resetFormAndDropdowns();
-        })
-        .catch(error => {
-            console.error('Error hiring employee:', error);
-            alert('Failed to hire employee.'); // Display error message
-        });
-    });
-
-    // Handle submit button enable/disable
+     // Handle submit button enable/disable
     document.addEventListener('DOMContentLoaded', (event) => {
+        //addErrorBorder('fNameInputId');
         // Real-time validation
         function addInputEventListeners() {
             const requiredInputs = document.querySelectorAll('input[required]');
@@ -251,6 +222,63 @@
         }
 
         addInputEventListeners();
+    });
+
+    // Handle form submission
+    document.getElementById('hireEmployeeForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        const data = {};
+        let validationErrors = []; 
+
+        formData.forEach((value, key) => { 
+            data[key] = value; 
+            
+            // Perform validation on the field values
+            if (key === 'p_first_name' && !validateName(value)) {
+                validationErrors.push('** Invalid first name. Only letters and spaces are allowed.');
+                addErrorBorder('fNameInputId');
+            } else if (key === 'p_last_name' && !validateName(value)) {
+                validationErrors.push('** Invalid last name. Only letters and spaces are allowed.');
+                addErrorBorder('lNameInputId');
+            } else if (key === 'p_email' && !validateEmail(value)) {
+                validationErrors.push('** Invalid email. Follow proper email format.');
+                addErrorBorder('emailInputId');
+            } else if (key === 'p_phone' && !validatePhone(value)) {
+                validationErrors.push('** Invalid phone. Only digits and standard symbols are allowed.');
+                addErrorBorder('phoneInputId');
+            } else if (key === 'p_salary' && !validateSalary(value)) {
+                validationErrors.push('** Invalid salary. Only digits are allowed.');
+                addErrorBorder('salaryInputId');
+            }
+        });
+
+        // Check if validationErrors[] is empty
+        if (validationErrors.length > 0) {
+            alert(validationErrors.join('\n'));
+        } else {
+            // No errors --> Fetch call
+            fetch('/hire-employee', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Response failed.'); 
+                }
+                return response.text();
+            })
+            .then(message => {
+                alert(message);
+                resetFormAndDropdowns();
+            })
+            .catch(error => {
+                console.error('Error hiring employee:', error);
+                alert('Failed to hire employee.'); // Display error message
+            });
+        }
     });
         
     // Check if all required fields aren't empty
