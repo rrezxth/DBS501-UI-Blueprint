@@ -278,7 +278,7 @@
 
     function resetFormAndDropdowns() {
         // Clear text fields
-        document.querySelectorAll('#hireEmployeeForm input[type="text"]').forEach(input => {
+        document.querySelectorAll('#hireEmployeeForm input[type="text"], #hireEmployeeForm input[type="number"], #hireEmployeeForm input[type="email"]').forEach(input => {
             input.value = '';
         });
 
