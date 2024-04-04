@@ -22,6 +22,12 @@ function validateSalary(salary) {
     return regex.test(salary);
 }
 
+// JOB_ID proper format ABC_ABC
+function validateJobId(jobId) {
+    const regex = /^[A-Z]_[A-Z]$/;
+    return regex.test(jobId);
+}
+
 function addErrorBorder(inputId) {
     document.getElementById(inputId).classList.add('input-error');
  }
@@ -38,6 +44,7 @@ if (typeof module !== 'undefined' && module.exports) {
         validatePhone,
         validateEmail,
         validateSalary,
+        validateJobId,
         addErrorBorder,
         removeErrorBorder
     };
