@@ -162,10 +162,16 @@ async function createNewEmployee(data) {
       }
     );
 
-    //console.log('Employee hired successfully.');
-  } catch (err) {
-    console.error('[DB.js] Error hiring employee:', err);
-    throw err;
+    return { success: true };
+    
+  } catch (error) {
+    // Check if the ERROR: Salary value out of range
+    if (error.code === 'ORA-20100') {
+      return { success: false, message: 'Salary value out of range.' + error.message };
+    } else {
+      // Other errors
+      return { success: false, message: '[DB.js] Error creating employee:' + error.message };
+    }
   } finally {
     if (connection) {
       try {
@@ -332,10 +338,9 @@ async function createNewJob(data) {
   } catch (error) {
     // Check if the error is a primary key constraint violation
     if (error.code === 'ORA-00001') {
-      // Customize the message as needed
       return { success: false, message: 'A job with the given ID already exists.' + error.message };
     } else {
-      // Handle other types of errors appropriately
+      // Other errors
       return { success: false, message: '[DB.js] Error creating job:' + error.message };
     }
   } finally {

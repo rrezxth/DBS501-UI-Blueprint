@@ -252,14 +252,22 @@
                 body: JSON.stringify(data),
             })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Response failed.'); 
+                // ERROR 409, Primary Key conflict
+                if (response.status === 409) {
+                    return response.json().then(data => {
+                        alert(data.error); 
+                        addErrorBorder('salaryInputId');
+                    });
+                } else if (!response.ok) {
+                    // Handle other types of errors
+                    return Promise.reject('An error occurred'); 
+                } else {
+                    // requests OK
+                    return response.text().then(message => {
+                        alert(message);
+                        resetFormAndDropdowns(); 
+                    });
                 }
-                return response.text();
-            })
-            .then(message => {
-                alert(message);
-                resetFormAndDropdowns();
             })
             .catch(error => {
                 console.error('Error hiring employee:', error);
