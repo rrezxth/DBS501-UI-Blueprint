@@ -196,7 +196,7 @@
         }
     }
 
-     // Handle submit button enable/disable
+    // Handle submit button enable/disable
     document.addEventListener('DOMContentLoaded', (event) => {
         //addErrorBorder('fNameInputId');
         // Real-time validation
@@ -224,19 +224,19 @@
             
             // Perform validation on the field values
             if (key === 'p_first_name' && !validateName(value)) {
-                validationErrors.push('** Invalid first name. Only letters and spaces are allowed.');
+                validationErrors.push('** Invalid First Name. Only letters and spaces are allowed.');
                 addErrorBorder('fNameInputId');
             } else if (key === 'p_last_name' && !validateName(value)) {
-                validationErrors.push('** Invalid last name. Only letters and spaces are allowed.');
+                validationErrors.push('** Invalid Last Name. Only letters and spaces are allowed.');
                 addErrorBorder('lNameInputId');
             } else if (key === 'p_email' && !validateEmail(value)) {
-                validationErrors.push('** Invalid email. Follow proper email format.');
+                validationErrors.push('** Invalid Email. Follow proper email format.');
                 addErrorBorder('emailInputId');
             } else if (key === 'p_phone' && !validatePhone(value)) {
-                validationErrors.push('** Invalid phone. Only digits and standard symbols are allowed.');
+                validationErrors.push('** Invalid Phone. Only digits and standard symbols are allowed.');
                 addErrorBorder('phoneInputId');
             } else if (key === 'p_salary' && !validateSalary(value)) {
-                validationErrors.push('** Invalid salary. Only digits are allowed.');
+                validationErrors.push('** Invalid Salary. Only digits are allowed.');
                 addErrorBorder('salaryInputId');
             }
         });
