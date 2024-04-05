@@ -203,6 +203,8 @@
         if (!email.trim() || !validateEmail(email)) {
             validationErrors.push('** Invalid Email. Follow proper email format.');
             document.querySelector('#editEmployeeForm #EMAIL').classList.add('input-error');
+        } else {
+            document.querySelector('##editEmployeeForm #EMAIL').classList.remove('input-error');
         }
     
         const phoneInput = document.querySelector('#editEmployeeForm #PHONE_NUMBER');
@@ -210,6 +212,8 @@
         if (!phone.trim() || !validatePhone(phone)) {
             validationErrors.push('** Invalid Phone. Follow proper phone format.');
             document.querySelector('#editEmployeeForm #PHONE').classList.add('input-error');
+        } else {
+            document.querySelector('##editEmployeeForm #PHONE').classList.remove('input-error');
         }
 
         const salaryInput = document.querySelector('#editEmployeeForm #SALARY');
@@ -217,6 +221,8 @@
         if (!salary.trim() || !validateSalary(salary)) {
             validationErrors.push('** Invalid Salary. Only non-negative digits are allowed.');
             document.querySelector('#editEmployeeForm #SALARY').classList.add('input-error');
+        } else {
+            document.querySelector('##editEmployeeForm #SALARY').classList.remove('input-error');
         }
             
         if (validationErrors.length > 0) {
