@@ -295,10 +295,17 @@
             input.value = '';
         });
 
-    // Reset dropdowns
-    document.getElementById('dropdownMenuButtonJob').textContent = 'Job List';
-    document.getElementById('dropdownMenuButtonManager').textContent = 'Manager List';
-    document.getElementById('dropdownMenuButtonDepartment').textContent = 'Department List';
+        // Reset dropdowns
+        document.getElementById('dropdownMenuButtonJob').textContent = 'Job List';
+        document.getElementById('dropdownMenuButtonManager').textContent = 'Manager List';
+        document.getElementById('dropdownMenuButtonDepartment').textContent = 'Department List';
+
+        // Clear Border Outline
+        removeErrorBorder('fNameInputId');
+        removeErrorBorder('lNameInputId');
+        removeErrorBorder('emailInputId');
+        removeErrorBorder('phoneInputId')
+        removeErrorBorder('salaryInputId');
     }
 
     Promise.all([fetchJobs(), fetchManagers(), fetchDepartments()])
